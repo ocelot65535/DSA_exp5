@@ -1,0 +1,7 @@
+# ninja log v5
+1	89	7231884191377519	CMakeFiles/DSA_exp5.dir/main.c.obj	28385e46e73f713f
+14	102	7231884191507609	CMakeFiles/DSA_exp5.dir/hfmtree.c.obj	93ddd68efb988859
+102	199	7231884192455728	DSA_exp5.exe	fd9b6108b7dfc9bc
+1	84	7231890727615001	CMakeFiles/DSA_exp5.dir/main.c.obj	28385e46e73f713f
+14	104	7231890727805377	CMakeFiles/DSA_exp5.dir/hfmtree.c.obj	93ddd68efb988859
+104	193	7231890728668298	DSA_exp5.exe	fd9b6108b7dfc9bc
