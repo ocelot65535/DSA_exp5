@@ -1,16 +1,41 @@
 #include "hfmtree.h"
+#include <stdio.h>
 int main() {
+    system("chcp 65001");
     /* 测试数据*/
     /* char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
      * 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}*/
     /* int weight[] = {'186', '64', '13', '22', '32', '103', '21', '15', '47', '57', '1', '5',
      * '32', '20', '57', '63', '15', '1', '48', '51', '80', '23', '8', '18', '1', '16', '1'}*/
-    char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+    char character[] = {'/ ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                         'I', 'J', 'K', 'L', 'M','N', 'O', 'P',
                         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                         'Y', 'Z'};
-    struct SeqList list[MAXSIZE_LIST];
-    initSqList(list, character);
+    int weight[] = {186, 64, 13, 22, 32, 103, 21, 15, 47, 57, 1, 5,
+                    32, 20, 57, 63, 15, 1, 48, 51, 80, 23, 8, 18, 1, 16, 1};
+//    struct SeqList list[MAXSIZE_LIST];
+//-----------------------------------------测试（但未手动验证）------------------------------------------------------//
+    int n = 27;
+    int m ;
+    m = 2*n -1;
+    SqList list;
+    HTNode ht[m+1];
+    hfmCode HC; // 存放编码结果
+    // 存放待编码字符与权重
+    initSqList(&list, character);
+    encoder_initTree(&ht, n, weight, character);
+    encoder_get_hfmcode(&ht, &HC, n);
+    for (int i = 1; i <= n; i++)								//
+    {
+        printf("%c:\t",ht[i].character);
+        printf("%s\n", HC[i]);
+    }
+    return 0;
+//----------------------------------------------------------------------------------------------------------------//
+
+
+
+
     //这里没分配内存，可能空指针了
 
 }
