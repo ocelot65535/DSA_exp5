@@ -5,6 +5,7 @@
 #define ITEM_5_HUFFMAN_HFMTREE_H
 #include <malloc.h>
 #include <stdio.h>
+#include <string.h>
 
 #define MAXSIZE_LIST 27
 // 节点类型定义
@@ -26,17 +27,20 @@ typedef char **hfmCode;
 //--------------------------------------------------------------------------------//
 
 // 初始化顺序表操作
-void initSqList(SqList *list,  char c[]);
+void init_SqList(SqList *list, char c[]);
 
 // 定义select函数来寻找最小值
 /*向select函数传入哈夫曼数组， 传入待遍历叶子节点的个数，定义*m1, *m2传入实参地址 */
-void encoder_select(HTree HT, int end, int *m1, int *m2);
+void init_select(HTree HT, int end, int *m1, int *m2);
 
 // 初始化哈夫曼树，根据定义：一颗有n个叶子的哈夫曼树共有2n-1个节点
-void encoder_initTree(HTNode *ht, int n, int w[], char c[]);
+void init_initTree(HTNode *ht, int n, int w[], char c[]);
 
 // 使用已经构造好的哈夫曼树来求编码
-void encoder_get_hfmcode(HTNode *Ht, hfmCode **HC, int n);
+void init_get_hfmcode(HTNode *Ht, hfmCode **HC, int n);
+
+// 储存编码结果
+void init_save_codefile(char ch, char* code);
 
 
 #endif //ITEM_5_HUFFMAN_HFMTREE_H

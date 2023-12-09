@@ -1,5 +1,5 @@
-#include "hfmtree.h"
-#include <stdio.h>
+#include "encoder.h"
+
 int main() {
     system("chcp 65001");
     /* 测试数据*/
@@ -7,13 +7,12 @@ int main() {
      * 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}*/
     /* int weight[] = {'186', '64', '13', '22', '32', '103', '21', '15', '47', '57', '1', '5',
      * '32', '20', '57', '63', '15', '1', '48', '51', '80', '23', '8', '18', '1', '16', '1'}*/
-    char character[] = {'/ ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+    char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                         'I', 'J', 'K', 'L', 'M','N', 'O', 'P',
                         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                         'Y', 'Z'};
     int weight[] = {186, 64, 13, 22, 32, 103, 21, 15, 47, 57, 1, 5,
                     32, 20, 57, 63, 15, 1, 48, 51, 80, 23, 8, 18, 1, 16, 1};
-//    struct SeqList list[MAXSIZE_LIST];
 //-----------------------------------------测试（但未手动验证）------------------------------------------------------//
     int n = 27;
     int m ;
@@ -21,15 +20,23 @@ int main() {
     SqList list;
     HTNode ht[m+1];
     hfmCode HC; // 存放编码结果
+
     // 存放待编码字符与权重
-    initSqList(&list, character);
-    encoder_initTree(&ht, n, weight, character);
-    encoder_get_hfmcode(&ht, &HC, n);
-    for (int i = 1; i <= n; i++)								//
+    init_SqList(&list, character);
+
+    init_initTree(ht, n, weight, character);
+    init_get_hfmcode(ht, &HC, n);
+
+
+    //为什么第一个还是从1开始。。。。
+    for (int i = 1; i <= n; i++)
     {
-        printf("%c:\t",ht[i].character);
-        printf("%s\n", HC[i]);
+        init_save_codefile(ht[i].character, HC[i]);
     }
+    encoder_encode(ht, HC, n);
+
+
+
     return 0;
 //----------------------------------------------------------------------------------------------------------------//
 

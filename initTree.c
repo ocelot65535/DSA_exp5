@@ -1,20 +1,13 @@
-//
-// Created by 30544 on 2023/12/5.
-//
-#include "hfmtree.h"
-#include <string.h>
+#include "initTree.h"
 
-void initSqList(SqList *list, char c[]){
+void init_SqList(SqList *list, char c[]){
     for(int i = 0; i <= MAXSIZE_LIST;i++){
         (*list)[i].data = 0;
         (*list)[i].name = c[i];
     }
 }
 
-/* 项目数据*/
-/* char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}*/
-/* int weight[] = {'186', '64', '13', '22', '32', '103', '21', '15', '47', '57', '1', '5', '32', '20', '57', '63', '15', '1', '48', '51', '80', '23', '8', '18', '1', '16', '1'}*/
-void encoder_select(HTree HT, int end, int *m1, int *m2){
+void init_select(HTree HT, int end, int *m1, int *m2){
     int i = 1;
     // 定义两个最小值的区间范围
     int min1 = 0;
@@ -58,8 +51,9 @@ void encoder_select(HTree HT, int end, int *m1, int *m2){
         }
     }
 }
+
 // 根据叶子节点个数初始化哈夫曼树
-void encoder_initTree(HTNode *ht, int n, int w[], char c[]){
+void init_initTree(HTNode *ht, int n, int w[], char c[]){
     int m ;
     m = 2*n -1;
 
@@ -82,7 +76,7 @@ void encoder_initTree(HTNode *ht, int n, int w[], char c[]){
     }
     for(int i = n+1; i<=m; i++){
         int min1 = 0, min2 = 0;
-        encoder_select(ht, i-1, &min1, &min2);
+        init_select(ht, i - 1, &min1, &min2);
         ht[min1].parent = i;
         ht[min2].parent = i;
         ht[i].LChild = min1;
@@ -94,7 +88,7 @@ void encoder_initTree(HTNode *ht, int n, int w[], char c[]){
 
 }
 
-void encoder_get_hfmcode(HTNode *Ht, hfmCode **HC, int n) {
+void init_get_hfmcode(HTNode *Ht, hfmCode **HC, int n) {
     *HC = (hfmCode*) malloc(sizeof(hfmCode) * (n + 1));
 
     char *cd = (char*) malloc(sizeof(char) * n);
@@ -121,6 +115,20 @@ void encoder_get_hfmcode(HTNode *Ht, hfmCode **HC, int n) {
         (*HC)[i] = (char*)malloc(sizeof(char) * (n - start));
         strcpy((*HC)[i], &cd[start]);
     }
-
     free(cd);
+}
+
+void init_save_codefile(char ch, char* code){
+    FILE *fp;
+    char * filepath = "..\\hfmtree";
+
+    fp = fopen(filepath, "a+");
+    if (fp == NULL){
+        printf("打开文件失败");
+        exit(0);
+    }
+
+    fprintf(fp, "%c:\t%s\n", ch, code);
+
+    fclose(fp);
 }
