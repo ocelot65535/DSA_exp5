@@ -1,9 +1,82 @@
 #include "decoder.h"
+
+typedef struct inited_tree{
+    HTNode * ht;
+    hfmCode * HC;
+}inited_tree;
+
+void set_inited_tree(inited_tree * tree, HTNode * ht, hfmCode * HC){
+    tree->ht = ht;
+    tree->HC = HC;
+}
+
+HTNode * get_ht(inited_tree * tree){
+    return tree->ht;
+}
+
+hfmCode * get_HC(inited_tree * tree){
+    return tree->HC;
+}
+
+inited_tree tree;
+
+void init(int is_linux);
+void encode(int is_linux, inited_tree * tree, int n);
+void decode(int is_linux);
+
+
 int main() {
     int is_linux = 0;
+    int is_inited = 0;
+
+    int n = 27;
+
     if (!is_linux){
         system("chcp 65001");
     }
+
+    printf("请输入操作：\n");
+    printf("I:初始化\n");
+    printf("C:编码\n");
+    printf("D:解码\n");
+    printf("E:退出\n");
+
+    char ch;
+    ch = getchar();
+
+    while (ch != 'E'){
+        if (ch == 'I'){
+            init(is_linux);
+            is_inited = 1;
+            printf("初始化完成\n");
+        }
+        if (ch == 'C'){
+            if (is_inited){
+                encode(is_linux, &tree, n);
+                printf("编码完成\n");
+            }
+            printf("请先初始化\n");
+        }
+        if (ch == 'D'){
+            decode(is_linux);
+            printf("解码完成\n");
+        }
+
+
+        printf("请输入操作：\n");
+        printf("I:初始化\n");
+        printf("C:编码\n");
+        printf("D:解码\n");
+        printf("E:退出\n");
+
+        fflush(stdin);
+        ch = getchar();
+    }
+    printf("感谢使用，再见\n");
+    return 0;
+}
+
+void init(int is_linux){
     /* 测试数据*/
     /* char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
      * 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}*/
@@ -38,8 +111,21 @@ int main() {
     {
         init_save_codefile(ht[i].character, HC[i], is_linux);
     }
-    encoder_encode(ht, HC, n, is_linux);
 
+    set_inited_tree(&tree, ht, HC);
+}
+
+
+void encode(int is_linux, inited_tree * tree, int n){
+    HTNode * ht;
+    hfmCode HC;
+
+    ht = get_ht(tree);
+    HC = get_HC(tree);
+
+    encoder_encode(ht, HC, n, is_linux);
+}
+
+void decode(int is_linux){
     decoder_decode(is_linux);
-    return 0;
 }
