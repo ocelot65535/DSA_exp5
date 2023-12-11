@@ -3,7 +3,7 @@
 //
 #ifndef ITEM_5_HUFFMAN_HFMTREE_H
 #define ITEM_5_HUFFMAN_HFMTREE_H
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -40,7 +40,9 @@ void init_initTree(HTNode *ht, int n, int w[], char c[]);
 void init_get_hfmcode(HTNode *Ht, hfmCode **HC, int n);
 
 // 储存编码结果
-void init_save_codefile(char ch, char* code);
+void init_save_codefile(char ch, char* code, int is_linux);
+
+void init_deleteCache(int is_linux);
 
 
 #endif //ITEM_5_HUFFMAN_HFMTREE_H
