@@ -7,7 +7,7 @@ void encoder_readTree();
 
 int encoder_search(char ch,  HTNode * charlist, int n);
 
-void encoder_encode();
+void encoder_encode(HTNode * charlist, hfmCode code, int n, int is_linux);
 
 
 

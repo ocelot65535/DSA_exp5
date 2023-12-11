@@ -14,7 +14,7 @@ int encoder_search(char ch, HTNode * charlist, int n){
     return -1;
 }
 
-void encoder_encode(HTNode * charlist, hfmCode code, int n){
+void encoder_encode(HTNode * charlist, hfmCode code, int n, int is_linux){
     //读取需要编码的文件
     char ch;
     char * string;
@@ -22,6 +22,12 @@ void encoder_encode(HTNode * charlist, hfmCode code, int n){
     FILE * target;
     char * sourcepath = "..\\tobetrans";
     char * targetpath = "..\\codefile";
+
+    if (is_linux){
+        sourcepath = "../tobetrans";
+        targetpath = "../codefile";
+
+    }
 
     source = fopen(sourcepath, "r");
     target = fopen(targetpath, "a");
@@ -39,11 +45,13 @@ void encoder_encode(HTNode * charlist, hfmCode code, int n){
         //查找字幕在表中的位置
         int index = encoder_search(ch, charlist, n);
         //将编码写入到文件中
-        if (index != -1)
+        if (index != -1){
             string = code[index];
-            fprintf(target, "%s  ", string);
+            fprintf(target, "%s", string);
+        }
     }
-
+    fprintf(target, ";");
+    printf("\n编码完成\n");
     fclose(source);
     fclose(target);
 }

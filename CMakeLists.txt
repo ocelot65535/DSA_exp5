@@ -5,8 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(DSA_exp5 initTree.h
         initTree.c
-        main.c
+        encoder.h
+        encoder.c
         decoder.h
         decoder.c
-        encoder.h
-        encoder.c)
+        main.c)

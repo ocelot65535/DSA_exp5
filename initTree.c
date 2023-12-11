@@ -118,9 +118,11 @@ void init_get_hfmcode(HTNode *Ht, hfmCode **HC, int n) {
     free(cd);
 }
 
-void init_save_codefile(char ch, char* code){
+void init_save_codefile(char ch, char* code, int is_linux){
     FILE *fp;
     char * filepath = "..\\hfmtree";
+    if (is_linux)
+        filepath = "../hfmtree";
 
     fp = fopen(filepath, "a+");
     if (fp == NULL){
@@ -128,7 +130,31 @@ void init_save_codefile(char ch, char* code){
         exit(0);
     }
 
-    fprintf(fp, "%c:\t%s\n", ch, code);
+    fprintf(fp, "%c:%s;\n", ch, code);
 
     fclose(fp);
+}
+
+void init_deleteCache(int is_linux){
+    FILE * hfmtree;
+    FILE * codefile;
+    FILE * textfile;
+
+    char * hfmtree_path = "..\\hfmtree";
+    char * codefile_path = "..\\codefile";
+    char * textfile_path = "..\\textfile";
+
+    if (is_linux){
+        hfmtree_path = "../hfmtree";
+        codefile_path = "../codefile";
+        textfile_path = "../textfile";
+    }
+
+    hfmtree = fopen(hfmtree_path, "w");
+    codefile = fopen(codefile_path,"w");
+    textfile = fopen(textfile_path, "w");
+
+    fclose(hfmtree);
+    fclose(codefile);
+    fclose(textfile);
 }
