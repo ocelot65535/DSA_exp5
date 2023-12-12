@@ -7,6 +7,7 @@ void encoder_readTree(){
 
 int encoder_search(char ch, HTNode * charlist, int n){
     for (int i = 1;i <= n;i++){
+//        HTNode * ptr = charlist + i;
         if (ch == charlist[i].character){
             return i;
         }
@@ -22,6 +23,12 @@ void encoder_encode(HTNode * charlist, hfmCode code, int n, int is_linux){
     FILE * target;
     char * sourcepath = "..\\tobetrans";
     char * targetpath = "..\\codefile";
+
+    HTNode charlist2[2*n];
+    memcpy(charlist2, charlist, sizeof(HTNode) * (2 * n));
+    hfmCode hfmCode2 = malloc(sizeof(hfmCode) * (n + 1));
+    memcpy(hfmCode2, code, sizeof(hfmCode) * (n + 1));
+
 
     if (is_linux){
         sourcepath = "../tobetrans";
@@ -41,12 +48,13 @@ void encoder_encode(HTNode * charlist, hfmCode code, int n, int is_linux){
         exit(0);
     }
 
+
     while ((ch = fgetc(source)) != EOF){
         //查找字幕在表中的位置
-        int index = encoder_search(ch, charlist, n);
+        int index = encoder_search(ch, charlist2, n);
         //将编码写入到文件中
         if (index != -1){
-            string = code[index];
+            string = hfmCode2[index];
             fprintf(target, "%s", string);
         }
     }

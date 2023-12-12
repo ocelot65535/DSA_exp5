@@ -2,26 +2,21 @@
 
 typedef struct inited_tree{
     HTNode * ht;
-    hfmCode * HC;
+    hfmCode HC;
 }inited_tree;
-
-void set_inited_tree(inited_tree * tree, HTNode * ht, hfmCode * HC){
-    tree->ht = ht;
-    tree->HC = HC;
-}
 
 HTNode * get_ht(inited_tree * tree){
     return tree->ht;
 }
 
-hfmCode * get_HC(inited_tree * tree){
+hfmCode get_HC(inited_tree * tree){
     return tree->HC;
 }
 
-inited_tree tree;
+void init(int is_linux, inited_tree * tree);
 
-void init(int is_linux);
 void encode(int is_linux, inited_tree * tree, int n);
+
 void decode(int is_linux);
 
 
@@ -31,9 +26,15 @@ int main() {
 
     int n = 27;
 
+    inited_tree * tree;
+    tree = malloc(sizeof (inited_tree));
+
     if (!is_linux){
         system("chcp 65001");
     }
+
+
+    init_deleteCache(is_linux);
 
     printf("请输入操作：\n");
     printf("I:初始化\n");
@@ -43,16 +44,16 @@ int main() {
 
     char ch;
     ch = getchar();
-
+//    ch = 'I';
     while (ch != 'E'){
         if (ch == 'I'){
-            init(is_linux);
+            init(is_linux, tree);
             is_inited = 1;
             printf("初始化完成\n");
         }
         if (ch == 'C'){
             if (is_inited){
-                encode(is_linux, &tree, n);
+                encode(is_linux, tree, n);
                 printf("编码完成\n");
             }
             printf("请先初始化\n");
@@ -71,12 +72,13 @@ int main() {
 
         fflush(stdin);
         ch = getchar();
+//        ch = 'C';
     }
     printf("感谢使用，再见\n");
     return 0;
 }
 
-void init(int is_linux){
+void init(int is_linux, inited_tree * tree){
     /* 测试数据*/
     /* char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
      * 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}*/
@@ -98,7 +100,6 @@ void init(int is_linux){
     hfmCode HC; // 存放编码结果
 
     init_deleteCache(is_linux);
-
     // 存放待编码字符与权重
     init_SqList(&list, character);
 
@@ -111,19 +112,15 @@ void init(int is_linux){
     {
         init_save_codefile(ht[i].character, HC[i], is_linux);
     }
-
-    set_inited_tree(&tree, ht, HC);
+    tree->ht = malloc(sizeof (HTNode) * (m+1));
+    tree->ht = ht;
+    tree->HC = malloc(sizeof (hfmCode) * (n + 1));
+    tree->HC = HC;
 }
 
 
 void encode(int is_linux, inited_tree * tree, int n){
-    HTNode * ht;
-    hfmCode HC;
-
-    ht = get_ht(tree);
-    HC = get_HC(tree);
-
-    encoder_encode(ht, HC, n, is_linux);
+    encoder_encode(tree->ht, tree->HC, n, is_linux);
 }
 
 void decode(int is_linux){
