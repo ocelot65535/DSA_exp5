@@ -1,7 +1,7 @@
 #include "initTree.h"
 
-void init_SqList(SqList *list, char c[]){
-    for(int i = 0; i <= MAXSIZE_LIST;i++){
+void init_SqList(SqList *list, char c[], int n){
+    for(int i = 0; i < n;i++){
         (*list)[i].data = 0;
         (*list)[i].name = c[i];
     }

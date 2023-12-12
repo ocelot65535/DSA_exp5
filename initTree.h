@@ -20,14 +20,14 @@ typedef struct HTNode{
 typedef struct SeqList{
     int data;
     char name;
-}SqList[MAXSIZE_LIST];
+}SqList;
 
 // 指向指针的指针
 typedef char **hfmCode;
 //--------------------------------------------------------------------------------//
 
 // 初始化顺序表操作
-void init_SqList(SqList *list, char c[]);
+void init_SqList(SqList *list, char c[], int n);
 
 // 定义select函数来寻找最小值
 /*向select函数传入哈夫曼数组， 传入待遍历叶子节点的个数，定义*m1, *m2传入实参地址 */
