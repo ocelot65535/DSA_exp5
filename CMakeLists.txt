@@ -9,4 +9,6 @@ add_executable(DSA_exp5 initTree.h
         encoder.c
         decoder.h
         decoder.c
-        main.c)
+        main.c
+        initTree.h
+        initMenu.c)

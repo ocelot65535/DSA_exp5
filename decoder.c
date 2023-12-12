@@ -116,7 +116,7 @@ void decoder_decode(int is_linux){
         found_character = decoder_sreach_code(head,text);
         if (found_character != '@'){
             fputc(found_character,textfile);
-            printf("\n向文件中输出了一个%c\n", found_character);
+            printf("向文件中输出了一个%c\n", found_character);
             start = end;
             end ++;
         } else{
