@@ -21,7 +21,7 @@ void decode(int is_linux);
 
 void print_codefile(int is_linux);
 
-void printHTree(HTNode *ht, int index, int depth);
+void printHTree(HTNode *ht, int index, int depth, FILE * treeprint);
 
 
 int main() {
@@ -79,7 +79,18 @@ int main() {
         }
         if (ch == 'T'){
             if (is_inited){
-                printHTree(tree->ht,1,0);
+                FILE * treeprint;
+                char * treeprintpath = "..\\treeprint";
+                if (is_linux){
+                    treeprintpath = "../treeprint";
+                }
+                treeprint = fopen(treeprintpath, "w");
+                if (treeprint == NULL){
+                    printf("treeprint打开失败");
+                    exit(-1);
+                }
+                printHTree(tree->ht,2 * n - 1 ,0, treeprint);
+                fclose(treeprint);
             } else{
                 printf("请先初始化\n");
             }
@@ -117,6 +128,14 @@ void init(int is_linux, inited_tree * tree, int is_testing){
                             'Y', 'Z'};
         int weight[] = {186, 64, 13, 22, 32, 103, 21, 15, 47, 57, 1, 5,
                         32, 20, 57, 63, 15, 1, 48, 51, 80, 23, 8, 18, 1, 16, 1};
+        /*
+                 char character[] = {' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                            'I', 'J', 'K', 'L', 'M','N', 'O', 'P',
+                            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                            'Y', 'Z'};
+        int weight[] = {186, 64, 13, 22, 32, 103, 21, 15, 47, 57, 1, 5,
+                        32, 20, 57, 63, 15, 1, 48, 51, 80, 23, 8, 18, 1, 16, 1};
+         */
         int n = 27;
         int m ;
         m = 2*n -1;
@@ -185,42 +204,63 @@ void decode(int is_linux){
 
 void print_codefile(int is_linux){
     FILE * codefile;
+    FILE * codeprint;
+
     char line_buffer[1024];
     char * filepath = "..\\codefile";
+    char * codeprintpath = "..\\codeprint";
     if (is_linux){
         filepath = "../codefile";
+        codeprintpath = "../codeprint";
     }
     codefile = fopen(filepath, "r");
+    codeprint = fopen(codeprintpath, "w");
+
     if (codefile == NULL){
         printf("codefile打开失败");
         exit(-1);
     }
+    if (codeprint == NULL){
+        printf("codeprint打开失败");
+        exit(-1);
+    }
+
     int index = 0;
     char ch;
     while ((ch = fgetc(codefile)) != ';'){
         if (index == 50){
             printf("\n");
             index = 0;
+            fprintf(codeprint, "\n");
         }
         printf("%c", ch);
+        fprintf(codeprint, "%c", ch);
         index++;
     }
+
+    fclose(codefile);
+    fclose(codeprint);
+
     printf("\n");
 }
 
-void printHTree(HTNode *ht, int index, int depth) {
+void printHTree(HTNode *ht, int index, int depth, FILE * treeprint) {
     if (index == 0) {
         return;
     }
-    printHTree(ht, ht[index].RChild, depth + 1);
-
     for (int i = 0; i < depth; i++) {
-        printf("    ");
+        printf("——");
+        fprintf(treeprint, "——");
     }
     if (ht[index].LChild == 0 && ht[index].RChild == 0) {
-        printf("%c (%d)\n", ht[index].character, ht[index].weight);
+//        printf("%c (%d)\n", ht[index].character, ht[index].weight);
+        printf("%c\n", ht[index].character);
+        fprintf(treeprint, "%c\n", ht[index].character);
     } else {
-        printf("* (%d)\n", ht[index].weight);
+//        printf("* (%d)\n", ht[index].weight);
+        printf("|\n");
+        fprintf(treeprint, "|\n");
     }
-    printHTree(ht, ht[index].LChild, depth + 1);
+    printHTree(ht, ht[index].LChild, depth + 1, treeprint);
+    printHTree(ht, ht[index].RChild, depth + 1, treeprint);
 }
